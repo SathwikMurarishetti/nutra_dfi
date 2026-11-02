@@ -1,0 +1,1122 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Explainable Drug–Food Interaction Hub (DFI)</title>
+
+    <meta name="description"
+        content="Explainable Drug-Food Interaction Hub - Clinical AI interface for predicting and understanding dietary medication interactions.">
+
+    <!-- Original CSS -->
+    <link rel="stylesheet" href="sty.css">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+</head>
+<body>
+
+  <!-- ==========================================
+       LOGIN / USER PROFILE SETUP MODAL
+       ========================================== -->
+  <div id="profileSetupModal" class="modal-overlay">
+    <div class="modal-card profile-modal-card">
+      <div class="modal-header">
+        <div class="brand-logo-inline">
+          <div class="logo-hexagon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2">
+              <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+              <circle cx="12" cy="12" r="3" fill="#00e5ff"></circle>
+            </svg>
+          </div>
+          <div>
+            <h2 class="modal-title">Drug–Food Interaction Hub</h2>
+            <p class="modal-subtitle">User Profile Setup & Clinical Portal Access</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="viva-notice-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <span><strong>Student Project Notice:</strong> Profile information is stored solely for user record keeping and
+          user display. It does <em>NOT</em> alter or bias the biochemical DFI interaction predictions.</span>
+      </div>
+
+      <form id="profileForm" class="profile-form">
+        <!-- Profile Picture Preview & Upload -->
+        <div class="profile-avatar-row">
+          <div class="avatar-preview-box">
+            <img id="avatarPreviewImg" src="" alt="Avatar" class="avatar-preview-img hidden">
+            <span id="avatarInitials" class="avatar-initials-placeholder">DR</span>
+          </div>
+          <div class="avatar-upload-meta">
+            <label class="form-label">Profile Picture (Optional)</label>
+            <input type="file" id="profilePicInput" accept="image/*" class="file-input-hidden">
+            <button type="button" class="btn-secondary btn-sm" id="btnUploadAvatar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              Upload Photo
+            </button>
+            <span class="field-hint">Supports PNG, JPG, or WEBP</span>
+          </div>
+        </div>
+
+        <h3 class="form-section-heading">Required Information</h3>
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label for="usernameInput" class="form-label">Username / Name <span class="req-star">*</span></label>
+            <input type="text" id="usernameInput" class="form-control" placeholder="e.g. Dr. Student" required>
+          </div>
+          <div class="form-group">
+            <label for="genderInput" class="form-label">Gender <span class="req-star">*</span></label>
+            <select id="genderInput" class="form-control" required>
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Non-Binary">Non-Binary</option>
+              <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ageInput" class="form-label">Age <span class="req-star">*</span></label>
+            <input type="number" id="ageInput" class="form-control" placeholder="e.g. 24" min="1" max="120" required>
+          </div>
+        </div>
+
+        <h3 class="form-section-heading">Optional Clinical Records</h3>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="emailInput" class="form-label">Email Address</label>
+            <input type="email" id="emailInput" class="form-control" placeholder="doctor.student@university.edu">
+          </div>
+          <div class="form-group">
+            <label for="phoneInput" class="form-label">Phone Number</label>
+            <input type="tel" id="phoneInput" class="form-control" placeholder="+1 (555) 019-2834">
+          </div>
+          <div class="form-group">
+            <label for="heightInput" class="form-label">Height (cm)</label>
+            <input type="number" id="heightInput" class="form-control" placeholder="e.g. 175">
+          </div>
+          <div class="form-group">
+            <label for="weightInput" class="form-label">Weight (kg)</label>
+            <input type="number" id="weightInput" class="form-control" placeholder="e.g. 70">
+          </div>
+          <div class="form-group">
+            <label for="allergiesInput" class="form-label">Known Allergies</label>
+            <input type="text" id="allergiesInput" class="form-control" placeholder="e.g. Penicillin, Peanuts, Sulfa">
+          </div>
+          <div class="form-group">
+            <label for="medicationsInput" class="form-label">Existing Routine Medications</label>
+            <input type="text" id="medicationsInput" class="form-control" placeholder="e.g. Multivitamin, Omega-3">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="emergencyContactInput" class="form-label">Emergency Contact Details</label>
+          <input type="text" id="emergencyContactInput" class="form-control"
+            placeholder="Contact Name & Phone (e.g. Jane Doe - +1 555-0199)">
+        </div>
+
+        <div class="modal-footer-actions">
+          <button type="button" class="btn-secondary" id="btnCancelProfile" style="display: none;">Cancel</button>
+          <button type="submit" class="btn-primary" id="btnSubmitProfile">
+            <span>Continue to Dashboard</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       CAMERA VIEW / WEBCAM MODAL
+       ========================================== -->
+  <div id="cameraModal" class="modal-overlay hidden">
+    <div class="modal-card camera-modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Live Camera Capture</h3>
+        <button type="button" class="btn-icon" id="btnCloseCamera">&times;</button>
+      </div>
+      <div class="camera-stream-wrapper">
+        <video id="webcamVideo" autoplay playsinline muted></video>
+        <canvas id="cameraCanvas" style="display: none;"></canvas>
+        <div id="cameraStatusText" class="camera-status">Initializing camera device...</div>
+      </div>
+      <div class="camera-actions">
+        <button type="button" class="btn-secondary" id="btnCancelCapture">Cancel</button>
+        <button type="button" class="btn-primary" id="btnCaptureSnapshot">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
+          </svg>
+          Capture Frame
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MAIN APP LAYOUT
+       ========================================== -->
+  <div class="app-layout">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-top">
+        <!-- Logo -->
+        <div class="sidebar-brand">
+          <div class="logo-hexagon-glow">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2.2">
+              <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+              <circle cx="12" cy="12" r="3.2" fill="#00e5ff"></circle>
+            </svg>
+          </div>
+          <span class="brand-text">NutriChem</span>
+        </div>
+
+        <!-- Sidebar Navigation Items -->
+        <nav class="sidebar-nav">
+          <button class="nav-item active" data-target="home" id="navHome" title="Home Dashboard">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span class="nav-label">Home</span>
+          </button>
+
+          <button class="nav-item" data-target="profile" id="navProfile" title="User Profile">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span class="nav-label">Cabinet</span>
+          </button>
+
+          <button class="nav-item" data-target="history" id="navHistory" title="Interaction History">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+            <span class="nav-label">History</span>
+          </button>
+
+          <button class="nav-item" data-target="analytics" id="navAnalytics" title="Clinical Analytics">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+            <span class="nav-label">Analytics</span>
+          </button>
+
+          <button class="nav-item" id="navAlerts" title="Clinical Alerts">
+            <div class="nav-icon-badge-wrapper">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+              </svg>
+              <span class="badge-count">4</span>
+            </div>
+            <span class="nav-label">Alerts</span>
+          </button>
+
+          <button class="nav-item" id="navDocs" title="Documentation & Guide">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <span class="nav-label">Docs</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="sidebar-bottom">
+        <button class="nav-item logout-btn" id="btnLogout" title="Switch User / Reset Profile">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span class="nav-label">Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN BODY / WRAPPER -->
+    <div class="main-wrapper">
+
+      <!-- TOP HEADER BAR -->
+      <header class="app-header">
+        <div class="header-left">
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+
+          <div class="header-title-group">
+            <h1 class="header-title">Explainable Drug–Food Interaction Hub</h1>
+            <div class="header-badges">
+              <span class="badge-pill badge-cyan">Active Interaction Hub</span>
+              <span class="badge-pill badge-dark-green"><span class="pulse-dot"></span> BIOBERT + XGBOOST (98.36%
+                ACC)</span>
+              <span class="badge-pill badge-blue">18 MOE DESCRIPTORS</span>
+              <span class="badge-pill badge-purple">INTEGRATIVE: ALLOPATHIC & HOMEOPATHIC</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Quick Sub-Nav Buttons -->
+          <div class="header-subnav">
+            <button class="subnav-btn active" data-target="home" id="btnSubnavAnalyzer">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+              Analyzer
+            </button>
+            <button class="subnav-btn" data-target="profile" id="btnSubnavCabinet">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              Cabinet (Profile)
+            </button>
+            <button class="subnav-btn" data-target="history" id="btnSubnavHistory">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              History
+            </button>
+            <button class="subnav-btn" data-target="analytics" id="btnSubnavAnalytics">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+              Analytics
+            </button>
+          </div>
+
+          <!-- Theme toggle -->
+          <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Lighting Mode">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#facc15" stroke-width="2">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+
+          <!-- Current User Profile Chip -->
+          <div class="user-profile-chip" id="userProfileChip" title="Click to view/edit user profile">
+            <div class="user-avatar-circle" id="headerAvatarCircle">
+              <img id="headerAvatarImg" src="" alt="User" class="hidden">
+              <span id="headerAvatarText">DS</span>
+            </div>
+            <div class="user-meta-text">
+              <span class="user-name" id="headerUsername">Dr. Student</span>
+              <span class="user-role" id="headerUserRole">DFI User</span>
+            </div>
+            <span class="user-online-dot"></span>
+          </div>
+        </div>
+      </header>
+
+      <!-- MAIN CONTENT SECTIONS -->
+      <main class="content-container">
+
+        <!-- ==============================================
+             SECTION 1: HOME / MAIN DASHBOARD
+             ============================================== -->
+        <section id="section-home" class="dashboard-section active">
+          <div class="dashboard-grid">
+
+            <!-- LEFT COLUMN: MULTI-MODAL INTERACTION INPUT -->
+            <div class="col-input">
+              <div class="card card-input">
+                <div class="card-header">
+                  <div class="card-title-icon-group">
+                    <div class="icon-square-teal">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <h2 class="card-title">Multi-Modal Interaction Input</h2>
+                      <p class="card-subtitle">Select medicine system, enter plain-English prompt, or capture image</p>
+                    </div>
+                  </div>
+                  <span class="badge-pill badge-teal">BIOBERT + MOE</span>
+                </div>
+
+                <div class="card-body">
+                  <!-- 1. Select Clinical Medicine System -->
+                  <div class="input-sub-section">
+                    <label class="section-sub-label">1. SELECT CLINICAL MEDICINE SYSTEM:</label>
+                    <div class="system-toggle-grid">
+                      <button type="button" class="system-card-btn active" id="btnSystemAllopathic">
+                        <div class="system-btn-icon">
+                          <!-- DNA Helix Icon -->
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2">
+                            <path d="M2 15c6.667-6 13.333 0 20-6"></path>
+                            <path d="M9 22c1.798-1.998 2.518-3.995 2.807-5.993"></path>
+                            <path d="M15 2c-1.798 1.998-2.518 3.995-2.807 5.993"></path>
+                            <path d="M17 6l-2.5-2.5"></path>
+                            <path d="M14 8l-1-1"></path>
+                            <path d="M7 18l2.5 2.5"></path>
+                            <path d="M3.5 14.5l3 3"></path>
+                            <path d="M20.5 9.5l-3-3"></path>
+                          </svg>
+                        </div>
+                        <div class="system-btn-text">
+                          <span class="system-name">Allopathic</span>
+                          <span class="system-sub">BioBERT + MOE</span>
+                        </div>
+                      </button>
+
+                      <button type="button" class="system-card-btn" id="btnSystemHomeopathic">
+                        <div class="system-btn-icon">
+                          <!-- Plant / Leaf Icon -->
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2">
+                            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z">
+                            </path>
+                            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+                          </svg>
+                        </div>
+                        <div class="system-btn-text">
+                          <span class="system-name">Homeopathic</span>
+                          <span class="system-sub">Materia Medica</span>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 2. Natural-Language Intake Query -->
+                  <div class="input-sub-section">
+                    <div class="label-with-action">
+                      <label class="section-sub-label">2. NATURAL-LANGUAGE INTAKE QUERY:</label>
+                      <button type="button" class="btn-text-clear" id="btnClearPrompt">Clear</button>
+                    </div>
+                    <div class="textarea-container">
+                      <textarea id="naturalQueryInput" class="custom-textarea" rows="3"
+                        placeholder="Taking Lipitor and drinking grapefruit juice... (or 'Can I eat spinach while taking warfarin?')"></textarea>
+                    </div>
+                  </div>
+
+                  <!-- Alternative Direct Food & Medicine Inputs -->
+                  <div class="input-sub-section direct-search-box">
+                    <div class="direct-search-header">
+                      <span class="search-divider-text">OR DIRECT CLINICAL SEARCH</span>
+                    </div>
+                    <div class="form-grid-2">
+                      <div class="form-group mb-0">
+                        <label for="medicineSearchInput" class="form-label-xs">Medicine / Drug Name</label>
+                        <input type="text" id="medicineSearchInput" class="form-control form-control-sm"
+                          placeholder="e.g. Lipitor (Atorvastatin)">
+                      </div>
+                      <div class="form-group mb-0">
+                        <label for="foodSearchInput" class="form-label-xs">Food / Beverage Item</label>
+                        <input type="text" id="foodSearchInput" class="form-control form-control-sm"
+                          placeholder="e.g. Grapefruit Juice">
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Quick Presets -->
+                  <div class="input-sub-section">
+                    <label class="section-sub-label">QUICK CLINICAL PRESETS (ALLOPATHIC):</label>
+                    <div class="presets-grid">
+                      <button type="button" class="preset-btn" data-preset="lipitor-grapefruit">Lipitor +
+                        Grapefruit</button>
+                      <button type="button" class="preset-btn" data-preset="warfarin-spinach">Warfarin +
+                        Spinach</button>
+                      <button type="button" class="preset-btn" data-preset="metformin-alcohol">Metformin +
+                        Alcohol</button>
+                      <button type="button" class="preset-btn" data-preset="paracetamol-orange">Paracetamol + Orange
+                        Juice</button>
+                      <button type="button" class="preset-btn" data-preset="ciprofloxacin-dairy">Ciprofloxacin +
+                        Dairy</button>
+                      <button type="button" class="preset-btn" data-preset="paracetamol-food">Paracetamol +
+                        Food</button>
+                    </div>
+                  </div>
+
+                  <!-- 3. Multi-Modal Visual Capture -->
+                  <div class="input-sub-section">
+                    <label class="section-sub-label">3. MULTI-MODAL VISUAL CAPTURE (OPTIONAL):</label>
+                    <div class="visual-capture-grid">
+                      <!-- File Upload -->
+                      <div class="capture-tile" id="tileFileUpload">
+                        <input type="file" id="imageInput" accept="image/*" class="file-input-hidden">
+                        <div class="tile-icon-circle icon-folder">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24" stroke="none">
+                            <path
+                              d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" />
+                          </svg>
+                        </div>
+                        <div class="tile-text">
+                          <span class="tile-title">Upload JPEG / PNG</span>
+                          <span class="tile-desc">Drag & drop pill label or meal photo (<code>.jpg</code>,
+                            <code>.png</code>)</span>
+                        </div>
+                      </div>
+
+                      <!-- Camera Capture -->
+                      <div class="capture-tile" id="tileCamera">
+                        <div class="tile-icon-circle icon-camera">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e2e8f0" stroke-width="2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+                            </path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                          </svg>
+                        </div>
+                        <div class="tile-text">
+                          <span class="tile-title">Capture via WebCam</span>
+                          <span class="tile-desc">Live camera viewfinder for prescriptions or dishes</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Image Preview Container -->
+                    <div id="imagePreviewContainer" class="image-preview-wrapper hidden">
+                      <div class="preview-thumbnail">
+                        <img id="imagePreviewImg" src="" alt="Uploaded Food/Drug">
+                      </div>
+                      <div class="preview-info">
+                        <span id="imagePreviewName" class="preview-filename">rx-label.jpg</span>
+                        <span class="preview-tag">Image Attached for Multi-Modal Analysis</span>
+                      </div>
+                      <button type="button" class="btn-icon btn-remove-img" id="btnRemoveImage"
+                        title="Remove image">&times;</button>
+                    </div>
+                  </div>
+
+                  <!-- Analyze CTA Button -->
+                  <div class="cta-wrapper">
+                    <button type="button" class="btn-analyze-primary" id="btnAnalyze">
+                      <span class="btn-sparkle">⚡</span>
+                      <span class="btn-text">Analyze Interaction</span>
+                    </button>
+                    <div class="analysis-status-indicator">
+                      <span class="status-dot"></span>
+                      <span id="analysisStatusText">Analysis complete</span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT COLUMN: INTERACTION RESULT & PHARMACOLOGY & MOLECULAR HEATMAP -->
+            <div class="col-results">
+
+              <!-- RESULT CARD -->
+              <div class="card card-result">
+                <!-- Result Card Header -->
+                <div class="card-header result-card-header">
+                  <div class="result-header-left">
+                    <div class="shield-icon-badge" id="resultStatusShield">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="result-title-row">
+                        <h2 class="result-title" id="resInteractionTitle">Lipitor (Atorvastatin) + Grapefruit</h2>
+                        <span class="badge-pill badge-cyan-outline" id="resSystemBadge">ALLOPATHIC (BIOBERT +
+                          MOE)</span>
+                      </div>
+                      <p class="result-pathway" id="resPathwayText">Target Pathway: Intestinal & Hepatic CYP3A4 /
+                        OATP1B1</p>
+                    </div>
+                  </div>
+
+                  <div class="result-header-actions">
+                    <button type="button" class="btn-outline-sm" id="btnScoreBreakdown">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                      </svg>
+                      Score Breakdown
+                    </button>
+                    <button type="button" class="btn-outline-sm" id="btnExportPDF">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                      </svg>
+                      Export PDF
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Result Card Main Split: Gauge (Left) & Pharmacology Summary (Right) -->
+                <div class="result-main-split">
+
+                  <!-- SUB-CARD A: NEW 3-STATE INTERACTION SPEEDOMETER / GAUGE -->
+                  <div class="gauge-subcard">
+                    <div class="gauge-header-label">
+                      <span>INTERACTION RISK GAUGE</span>
+                    </div>
+
+                    <!-- Dynamic SVG 3-State Gauge -->
+                    <div class="gauge-wrapper">
+                      <svg id="interactionGaugeSvg" class="gauge-svg" viewBox="0 0 300 170">
+                        <defs>
+                          <!-- Left Gradient: Center Light Yellow -> Orange -> Red -->
+                          <linearGradient id="leftGrad" x1="100%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#fef08a" />
+                            <stop offset="45%" stop-color="#fb923c" />
+                            <stop offset="100%" stop-color="#ef4444" />
+                          </linearGradient>
+
+                          <!-- Right Gradient: Center Light Yellow -> Light Green -> Dark Green -->
+                          <linearGradient id="rightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#fef08a" />
+                            <stop offset="45%" stop-color="#4ade80" />
+                            <stop offset="100%" stop-color="#15803d" />
+                          </linearGradient>
+
+                          <!-- Glow filters for needle and active state -->
+                          <filter id="gaugeGlow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="3" result="blur" />
+                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                          </filter>
+                        </defs>
+
+                        <!-- Background Track -->
+                        <path d="M 40 145 A 110 110 0 0 1 260 145" fill="none" stroke="#17223b" stroke-width="16"
+                          stroke-linecap="round" />
+
+                        <!-- Left Track: Center (150, 35) to Left (40, 145) -->
+                        <!-- A radiusX radiusY x-axis-rotation large-arc sweep x y -->
+                        <path d="M 150 35 A 110 110 0 0 0 40 145" fill="none" stroke="url(#leftGrad)" stroke-width="14"
+                          stroke-linecap="round" />
+
+                        <!-- Right Track: Center (150, 35) to Right (260, 145) -->
+                        <path d="M 150 35 A 110 110 0 0 1 260 145" fill="none" stroke="url(#rightGrad)"
+                          stroke-width="14" stroke-linecap="round" />
+
+                        <!-- Scale Tick Marks & Labels -->
+                        <!-- Center Neutral Tick (0) -->
+                        <line x1="150" y1="26" x2="150" y2="44" stroke="#e2e8f0" stroke-width="2.5" />
+                        <text x="150" y="20" class="gauge-label-center" text-anchor="middle">0 (Neutral)</text>
+
+                        <!-- Left Ticks (Negative: 0 -> 100) -->
+                        <line x1="85" y1="67" x2="93" y2="76" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+                        <line x1="45" y1="120" x2="57" y2="124" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+                        <text x="32" y="162" class="gauge-label-left" text-anchor="middle">100</text>
+                        <text x="45" y="146" class="gauge-label-desc" text-anchor="middle">Negative</text>
+
+                        <!-- Right Ticks (Positive: 0 -> 100) -->
+                        <line x1="215" y1="67" x2="207" y2="76" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+                        <line x1="255" y1="120" x2="243" y2="124" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+                        <text x="268" y="162" class="gauge-label-right" text-anchor="middle">100</text>
+                        <text x="255" y="146" class="gauge-label-desc" text-anchor="middle">Positive</text>
+
+                        <!-- Center Pivot & Dynamic Needle -->
+                        <g id="needleGroup" class="needle-group">
+                          <!-- Pointer Needle -->
+                          <polygon points="147,145 153,145 151,36 149,36" fill="#00e5ff" filter="url(#gaugeGlow)" />
+                          <line x1="150" y1="145" x2="150" y2="35" stroke="#ffffff" stroke-width="2" />
+                          <!-- Pivot Hub -->
+                          <circle cx="150" cy="145" r="9" fill="#0b1329" stroke="#00e5ff" stroke-width="3" />
+                          <circle cx="150" cy="145" r="4" fill="#00e5ff" />
+                        </g>
+                      </svg>
+                    </div>
+
+                    <!-- Dynamic Score Display -->
+                    <div class="gauge-score-display">
+                      <span class="score-number" id="resScoreNum">86</span>
+                      <span class="score-denom"> / 100</span>
+                    </div>
+
+                    <!-- Risk Result Text & Recommendation (Sections 8 & 9) -->
+                    <div class="risk-result-badge-box">
+                      <div class="risk-status-pill status-unsafe" id="resRiskBadge">
+                        <span id="resRiskStatusText">Unsafe</span>
+                      </div>
+                      <div class="risk-recommendation-text" id="resRecommendationText">
+                        Cannot be consumed
+                      </div>
+                    </div>
+
+                    <!-- Legend indicators below gauge -->
+                    <div class="gauge-legend-pills">
+                      <span class="legend-pill"><span class="dot-red"></span> Left: Negative / Unsafe</span>
+                      <span class="legend-pill"><span class="dot-yellow"></span> Center: Neutral</span>
+                      <span class="legend-pill"><span class="dot-green"></span> Right: Positive / Safe</span>
+                    </div>
+                  </div>
+
+                  <!-- SUB-CARD B: PHARMACOLOGICAL MECHANISM & ALTERNATIVES -->
+                  <div class="mechanism-subcard">
+                    <!-- Mechanism Header -->
+                    <div class="mechanism-box-header">
+                      <div class="bulb-icon">💡</div>
+                      <h3 class="mechanism-heading">PHARMACOLOGICAL MECHANISM & CROSS-ATTENTION SUMMARY</h3>
+                    </div>
+
+                    <!-- Mechanism Explanation Paragraph -->
+                    <p class="mechanism-text" id="resMechanismText">
+                      Grapefruit contains potent furanocoumarins (6',7'-dihydroxybergamottin and bergamottin) that
+                      irreversibly inactivate intestinal CYP3A4 via suicide inhibition. This blocks first-pass
+                      clearance, elevating systemic statin exposure by up to 700% and provoking severe rhabdomyolysis
+                      and myotoxicity.
+                    </p>
+
+                    <!-- Safe Dietary Alternatives Grid -->
+                    <div class="alternatives-section">
+                      <div class="alternatives-header">
+                        <span class="alt-leaf-icon">🥗</span>
+                        <span class="alt-title">Suggested Safe Dietary Alternatives <span class="alt-sub">(Click to
+                            test)</span></span>
+                      </div>
+
+                      <div class="alternatives-grid" id="alternativesContainer">
+                        <button type="button" class="alt-item-card" data-alt="Sweet Navel Oranges">
+                          <span class="alt-emoji">🍊</span>
+                          <div class="alt-text-group">
+                            <span class="alt-name">Sweet Navel Oranges</span>
+                            <span class="alt-action">Safe Substitute • Test &rarr;</span>
+                          </div>
+                        </button>
+
+                        <button type="button" class="alt-item-card" data-alt="Gala Apples">
+                          <span class="alt-emoji">🍎</span>
+                          <div class="alt-text-group">
+                            <span class="alt-name">Gala Apples</span>
+                            <span class="alt-action">Safe Substitute • Test &rarr;</span>
+                          </div>
+                        </button>
+
+                        <button type="button" class="alt-item-card" data-alt="Fresh Strawberries">
+                          <span class="alt-emoji">🍓</span>
+                          <div class="alt-text-group">
+                            <span class="alt-name">Fresh Strawberries</span>
+                            <span class="alt-action">Safe Substitute • Test &rarr;</span>
+                          </div>
+                        </button>
+
+                        <button type="button" class="alt-item-card" data-alt="Blueberries">
+                          <span class="alt-emoji">🫐</span>
+                          <div class="alt-text-group">
+                            <span class="alt-name">Blueberries</span>
+                            <span class="alt-action">Safe Substitute • Test &rarr;</span>
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!-- CARD: INTERACTIVE MOLECULAR ATTENTION HEATMAP (SECTION 12) -->
+              <div class="card card-heatmap">
+                <div class="card-header heatmap-header">
+                  <div class="card-title-icon-group">
+                    <div class="helix-icon">🧬</div>
+                    <div>
+                      <h3 class="heatmap-card-title">Interactive Molecular Attention Heatmap</h3>
+                      <p class="card-subtitle">2D skeletal structures with Red (Risk Driver) &amp; Cyan
+                        (Neutral/Stabilizer) highlights</p>
+                    </div>
+                  </div>
+                  <div class="heatmap-legend">
+                    <span class="legend-chip chip-red"><span class="dot-red"></span> Red: Risk Driver</span>
+                    <span class="legend-chip chip-cyan"><span class="dot-cyan"></span> Cyan: Neutral / Stabilizer</span>
+                  </div>
+                </div>
+
+                <div class="heatmap-body">
+                  <div class="molecules-grid">
+                    <!-- Drug Molecular Card -->
+                    <div class="molecule-structure-card">
+                      <div class="molecule-card-header">
+                        <span class="mol-label">DRUG ACTIVE CORE</span>
+                        <span class="mol-smiles" id="molDrugSmiles">CC(C)c1c(C(=O)Nc2ccccc2...</span>
+                      </div>
+                      <h4 class="mol-name" id="molDrugName">Lipitor (Atorvastatin)</h4>
+
+                      <!-- Chemical Structure Canvas/SVG Area -->
+                      <div class="chemical-vis-canvas-box" id="drugStructureVis">
+                        <!-- SVG 2D Skeletal Structure with glowing atoms & highlighted rings -->
+                        <svg class="molecule-svg" viewBox="0 0 280 140">
+                          <!-- Bonds -->
+                          <line x1="50" y1="70" x2="75" y2="55" stroke="#475569" stroke-width="2" />
+                          <line x1="75" y1="55" x2="100" y2="70" stroke="#475569" stroke-width="2" />
+                          <line x1="100" y1="70" x2="125" y2="55" stroke="#ef4444" stroke-width="2.5" />
+                          <line x1="125" y1="55" x2="150" y2="70" stroke="#ef4444" stroke-width="2.5" />
+
+                          <!-- Pyrrole / Central Ring (Risk Driver highlighted) -->
+                          <polygon points="170,55 195,45 210,65 195,85 170,80" fill="rgba(239, 68, 68, 0.15)"
+                            stroke="#ef4444" stroke-width="2" />
+
+                          <!-- Substituted Rings -->
+                          <polygon points="210,65 235,55 250,70 240,90 215,90" fill="none" stroke="#38bdf8"
+                            stroke-width="1.8" />
+                          <polygon points="195,85 195,115 175,125 155,115 155,85" fill="none" stroke="#475569"
+                            stroke-width="1.8" />
+
+                          <!-- Functional Group Labels -->
+                          <text x="35" y="75" class="chem-atom-red">OH</text>
+                          <text x="88" y="75" class="chem-atom-red">OH</text>
+                          <text x="175" y="45" class="chem-atom-cyan">HN</text>
+                          <text x="255" y="95" class="chem-atom-cyan">F</text>
+                          <text x="145" y="135" class="chem-atom-gray">C=O</text>
+
+                          <!-- Attention Hotspot circles -->
+                          <circle cx="195" cy="65" r="16" fill="rgba(239, 68, 68, 0.25)" stroke="#ef4444"
+                            stroke-width="1.5" stroke-dasharray="3,3" />
+                        </svg>
+                      </div>
+
+                      <div class="mol-footer-annotation">
+                        <span class="annotation-text" id="molDrugAnnotation"><span class="dot-red"></span> Red (Driver):
+                          Dihydroxyheptanoic Acid &amp; Fluorophenyl Pyrrole Core</span>
+                      </div>
+                    </div>
+
+                    <!-- Interacting Food Phytochemical Card -->
+                    <div class="molecule-structure-card">
+                      <div class="molecule-card-header">
+                        <span class="mol-label">INTERACTING FOOD PHYTOCHEMICAL</span>
+                        <span class="mol-smiles" id="molFoodSmiles">CC(C)=CCC1=C(O)C(=O)C2=...</span>
+                      </div>
+                      <h4 class="mol-name" id="molFoodName">Grapefruit (Bergamottin &amp; 6',7'-Dihydroxybergamottin)
+                      </h4>
+
+                      <!-- Chemical Structure Canvas/SVG Area -->
+                      <div class="chemical-vis-canvas-box" id="foodStructureVis">
+                        <!-- SVG 2D Coumarin / Furanocoumarin Skeletal Structure -->
+                        <svg class="molecule-svg" viewBox="0 0 280 140">
+                          <!-- Coumarin bicyclic core -->
+                          <polygon points="80,55 105,40 130,55 130,85 105,100 80,85" fill="rgba(239, 68, 68, 0.18)"
+                            stroke="#ef4444" stroke-width="2" />
+                          <polygon points="130,55 155,40 180,55 180,85 155,100 130,85" fill="rgba(239, 68, 68, 0.18)"
+                            stroke="#ef4444" stroke-width="2" />
+
+                          <!-- Furan Ring fused (Driver) -->
+                          <polygon points="80,55 60,70 70,95 80,85" fill="rgba(239, 68, 68, 0.22)" stroke="#ef4444"
+                            stroke-width="2" />
+
+                          <!-- Side chain -->
+                          <line x1="180" y1="70" x2="205" y2="70" stroke="#38bdf8" stroke-width="2" />
+                          <line x1="205" y1="70" x2="225" y2="55" stroke="#38bdf8" stroke-width="2" />
+                          <line x1="225" y1="55" x2="245" y2="70" stroke="#475569" stroke-width="2" />
+
+                          <!-- Double bonds & atoms -->
+                          <line x1="105" y1="45" x2="125" y2="57" stroke="#ef4444" stroke-width="1.8" />
+                          <text x="65" y="42" class="chem-atom-cyan">O</text>
+                          <text x="127" y="112" class="chem-atom-red">=O</text>
+                          <text x="175" y="45" class="chem-atom-cyan">O</text>
+                          <text x="245" y="85" class="chem-atom-red">OH</text>
+
+                          <!-- Attention Hotspot circles -->
+                          <circle cx="95" cy="70" r="22" fill="rgba(239, 68, 68, 0.2)" stroke="#ef4444"
+                            stroke-width="1.5" stroke-dasharray="3,3" />
+                        </svg>
+                      </div>
+
+                      <div class="mol-footer-annotation">
+                        <span class="annotation-text" id="molFoodAnnotation"><span class="dot-red"></span> Red (Driver):
+                          Furanocoumarin Epoxide &amp; Coumarin Lactone Ring</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==============================================
+             SECTION 2: USER PROFILE / CABINET VIEW & EDIT
+             ============================================== -->
+        <section id="section-profile" class="dashboard-section">
+          <div class="profile-page-container">
+            <div class="card profile-overview-card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">User Profile &amp; Clinical Information</h2>
+                  <p class="card-subtitle">Stored in local session memory (Independent of ML interaction predictions)
+                  </p>
+                </div>
+                <button type="button" class="btn-primary btn-sm" id="btnEditProfile">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                  </svg>
+                  Edit Profile
+                </button>
+              </div>
+
+              <div class="card-body">
+                <div class="profile-hero-row">
+                  <div class="profile-large-avatar" id="profileViewAvatar">
+                    <img id="profileLargeAvatarImg" src="" alt="Avatar" class="avatar-large-img hidden">
+                    <span id="profileLargeInitials" class="avatar-large-text">DS</span>
+                  </div>
+                  <div class="profile-hero-details">
+                    <h3 class="profile-hero-name" id="viewUsername">Dr. Student</h3>
+                    <div class="profile-hero-badges">
+                      <span class="badge-pill badge-cyan" id="viewGender">Male</span>
+                      <span class="badge-pill badge-blue" id="viewAge">24 Years</span>
+                      <span class="badge-pill badge-green">Authorized Student Evaluator</span>
+                    </div>
+                    <p class="profile-hero-email" id="viewEmail">student.researcher@medical.edu</p>
+                  </div>
+                </div>
+
+                <div class="profile-details-grid">
+                  <div class="detail-tile">
+                    <span class="detail-label">Phone Number</span>
+                    <span class="detail-val" id="viewPhone">+1 (555) 019-2834</span>
+                  </div>
+                  <div class="detail-tile">
+                    <span class="detail-label">Height</span>
+                    <span class="detail-val" id="viewHeight">175 cm</span>
+                  </div>
+                  <div class="detail-tile">
+                    <span class="detail-label">Weight</span>
+                    <span class="detail-val" id="viewWeight">70 kg</span>
+                  </div>
+                  <div class="detail-tile">
+                    <span class="detail-label">Emergency Contact</span>
+                    <span class="detail-val" id="viewEmergency">Jane Doe (+1 555-0199)</span>
+                  </div>
+                  <div class="detail-tile span-2">
+                    <span class="detail-label">Known Allergies</span>
+                    <span class="detail-val tag-val" id="viewAllergies">Penicillin, Peanuts</span>
+                  </div>
+                  <div class="detail-tile span-2">
+                    <span class="detail-label">Current Medications</span>
+                    <span class="detail-val tag-val" id="viewMedications">Multivitamin, Omega-3</span>
+                  </div>
+                </div>
+
+                <!-- Viva / Academic Project Callout -->
+                <div class="academic-callout-box">
+                  <h4>Academic Project Architecture Note:</h4>
+                  <p>In accordance with project requirements, the above profile records are maintained solely for user
+                    management and clinical auditing. The ML inference pipeline computes Drug–Food Interaction risk
+                    strictly using chemical and pharmacogenomic data from the food and drug query.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==============================================
+             SECTION 3: HISTORY LOG
+             ============================================== -->
+        <section id="section-history" class="dashboard-section">
+          <div class="card history-card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Interaction Analysis History</h2>
+                <p class="card-subtitle">Log of all simulated and verified drug–food interaction queries</p>
+              </div>
+              <button type="button" class="btn-danger btn-sm" id="btnClearHistory">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                Clear History
+              </button>
+            </div>
+
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="data-table" id="historyTable">
+                  <thead>
+                    <tr>
+                      <th>Date / Time</th>
+                      <th>Medicine / Drug</th>
+                      <th>Food / Beverage</th>
+                      <th>System</th>
+                      <th>Score</th>
+                      <th>Risk Status</th>
+                      <th>Clinical Recommendation</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="historyTableBody">
+                    <!-- Populated dynamically via JS -->
+                  </tbody>
+                </table>
+              </div>
+
+              <div id="historyEmptyState" class="empty-state-box hidden">
+                <div class="empty-state-icon">📋</div>
+                <h3>No History Recorded Yet</h3>
+                <p>Perform an interaction analysis from the Home Analyzer to record clinical interactions.</p>
+                <button type="button" class="btn-primary btn-sm" id="btnGoToAnalyzerFromHistory">Go to Analyzer</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==============================================
+             SECTION 4: ANALYTICS & INSIGHTS
+             ============================================== -->
+        <section id="section-analytics" class="dashboard-section">
+          <div class="analytics-container">
+            <!-- 4 Metrics Counter Cards -->
+            <div class="stats-row">
+              <div class="stat-card">
+                <div class="stat-header">
+                  <span class="stat-title">TOTAL ANALYSES</span>
+                  <div class="stat-icon-wrap icon-cyan">📊</div>
+                </div>
+                <div class="stat-number" id="statTotalCount">0</div>
+                <div class="stat-meta">Interactions processed</div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-header">
+                  <span class="stat-title">UNSAFE / NEGATIVE</span>
+                  <div class="stat-icon-wrap icon-red">⚠️</div>
+                </div>
+                <div class="stat-number stat-num-red" id="statUnsafeCount">0</div>
+                <div class="stat-meta" id="statUnsafePct">0% of total queries</div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-header">
+                  <span class="stat-title">NON-SIGNIFICANT</span>
+                  <div class="stat-icon-wrap icon-yellow">⚖️</div>
+                </div>
+                <div class="stat-number stat-num-yellow" id="statNeutralCount">0</div>
+                <div class="stat-meta" id="statNeutralPct">0% of total queries</div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-header">
+                  <span class="stat-title">SAFE / POSITIVE</span>
+                  <div class="stat-icon-wrap icon-green">✅</div>
+                </div>
+                <div class="stat-number stat-num-green" id="statSafeCount">0</div>
+                <div class="stat-meta" id="statSafePct">0% of total queries</div>
+              </div>
+            </div>
+
+            <!-- Risk Distribution Bar -->
+            <div class="card mb-4">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Clinical Risk Distribution Ratio</h3>
+                  <p class="card-subtitle">Visual breakdown of logged patient food-drug combinations</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="ratio-bar-wrapper">
+                  <div class="ratio-segment segment-red" id="barSegUnsafe" style="width: 33.3%;"></div>
+                  <div class="ratio-segment segment-yellow" id="barSegNeutral" style="width: 33.3%;"></div>
+                  <div class="ratio-segment segment-green" id="barSegSafe" style="width: 33.4%;"></div>
+                </div>
+                <div class="ratio-legend-row">
+                  <span class="ratio-legend-item"><span class="dot-red"></span> Unsafe: <strong
+                      id="lblPctUnsafe">33%</strong></span>
+                  <span class="ratio-legend-item"><span class="dot-yellow"></span> Non-Significant: <strong
+                      id="lblPctNeutral">33%</strong></span>
+                  <span class="ratio-legend-item"><span class="dot-green"></span> Safe: <strong
+                      id="lblPctSafe">34%</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Top Frequently Checked Pairs -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Most Commonly Evaluated Drug-Food Combinations</h3>
+                  <p class="card-subtitle">High-frequency clinical pairs in database</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="common-pairs-list" id="commonPairsList">
+                  <!-- Populated dynamically via JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+
+    <!-- FLOATING AI PHARMACIST ACTION BUTTON & DRAWER -->
+    <div class="floating-ai-wrapper">
+      <button type="button" class="floating-ai-pill" id="btnToggleAiPharmacist">
+        <span class="ai-sparkle">●</span>
+        <span>AI Pharmacist</span>
+      </button>
+    </div>
+
+    <!-- AI Pharmacist Consultation Drawer / Modal -->
+    <div id="aiPharmacistDrawer" class="ai-drawer hidden">
+      <div class="drawer-header">
+        <div class="drawer-header-brand">
+          <span class="bot-badge">AI</span>
+          <div>
+            <h4 class="drawer-title">AI Pharmacist Assistant</h4>
+            <span class="drawer-status">Active • BioBERT Clinical Knowledge</span>
+          </div>
+        </div>
+        <button type="button" class="btn-icon" id="btnCloseAiDrawer">&times;</button>
+      </div>
+      <div class="drawer-messages" id="aiDrawerMessages">
+        <div class="chat-msg msg-ai">
+          <p>Hello! I am your AI Clinical Pharmacist. Ask me any question regarding CYP3A4 metabolism, drug clearance,
+            or food safety guidelines.</p>
+        </div>
+      </div>
+      <div class="drawer-input-row">
+        <input type="text" id="aiDrawerInput" placeholder="Ask a pharmacology question..."
+          class="form-control form-control-sm">
+        <button type="button" class="btn-primary btn-sm" id="btnSendAiMsg">Send</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
